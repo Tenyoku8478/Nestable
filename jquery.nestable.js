@@ -62,6 +62,7 @@
             list.reset();
 
             list.el.data('nestable-group', this.options.group);
+            list.el.data('locked', false);
 
             list.placeEl = $('<div class="' + list.options.placeClass + '"/>');
 
@@ -86,6 +87,7 @@
 
             var onStartEvent = function(e)
             {
+                if(list.el.data('locked')) return;
                 var handle = $(e.target);
                 if (!handle.hasClass(list.options.handleClass)) {
                     if (handle.closest('.' + list.options.noDragClass).length) {
@@ -134,6 +136,18 @@
             list.w.on('mousemove', onMoveEvent);
             list.w.on('mouseup', onEndEvent);
 
+        },
+
+        lock: function()
+        {
+            this.el.data('locked', true);
+            this.el.addClass('dd-locked');
+        },
+
+        unlock: function()
+        {
+            this.el.data('locked', false);
+            this.el.removeClass('dd-locked');
         },
 
         serialize: function()
